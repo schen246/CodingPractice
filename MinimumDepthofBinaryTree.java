@@ -24,4 +24,17 @@ public class MinimumDepthofBinaryTree {
         }
         return res;
     }
+
+    // recursion - time: O(n) space: O(height)
+    public int minDepth2(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+        if (left != 0 && right != 0) {
+            return Math.min(left, right) + 1;
+        }
+        return left == 0 ? right + 1 : left + 1;
+    }
 }
