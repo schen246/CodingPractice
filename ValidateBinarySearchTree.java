@@ -38,4 +38,26 @@ public class ValidateBinarySearchTree {
             root = root.left;
         }
     }
+
+    // recursion top-down - time: O(n) space: O(height)
+    public boolean isValidBST3(TreeNode root) {
+        return helper(root)[0] == 1;
+    }
+    
+    private long[] helper(TreeNode root) {
+        if (root == null) {
+            return new long[]{1, Long.MAX_VALUE, Long.MIN_VALUE}; // isBST, min, max
+        }
+        long[] left = helper(root.left);
+        long[] right = helper(root.right);
+        long[] ans = new long[3];
+        if (left[0] == 1 && right[0] == 1 && left[2] < root.val && root.val < right[1]) {
+            ans[0] = 1;
+            ans[1] = Math.min(left[1], root.val);
+            ans[2] = Math.max(right[2], root.val);
+        } else {
+            ans[0] = -1;
+        }
+        return ans;
+    }
 }
