@@ -60,4 +60,32 @@ public class ValidateBinarySearchTree {
         }
         return ans;
     }
+
+    // recursion + wrapper class
+    public boolean isValidBST4(TreeNode root) {
+        Node res = helper2(root);
+        return res.isBST;
+    }
+    
+    private Node helper2(TreeNode root) {
+        if (root == null) {
+            return new Node(true, Long.MAX_VALUE, Long.MIN_VALUE);
+        }
+        Node left = helper2(root.left);
+        Node right = helper2(root.right);
+        if (left.isBST && right.isBST && left.max < root.val && root.val < right.min) {
+            return new Node(true, Math.min(left.min, root.val), Math.max(root.val, right.max));
+        }
+        return new Node(false, 0, 0);
+    }
+
+    class Node {
+        boolean isBST;
+        long min, max;
+        public Node(boolean isBST, long min, long max) {
+            this.isBST = isBST;
+            this.min = min;
+            this.max = max;
+        }
+    }
 }
