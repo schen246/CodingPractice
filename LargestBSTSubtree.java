@@ -24,4 +24,36 @@ public class LargestBSTSubtree {
         }
         return ans;
     }
+
+    // recursion + wrapper class
+    public int largestBSTSubtree2(TreeNode root) {
+        int[] res = new int[1];
+        helper2(root, res);
+        return res[0];
+    }
+    
+    private Node helper2(TreeNode root, int[] res) {
+        if (root == null) {
+            return new Node(true, 0, Integer.MAX_VALUE, Integer.MIN_VALUE);
+        }
+        Node left = helper2(root.left, res);
+        Node right = helper2(root.right, res);
+        if (left.isBST && right.isBST && left.max < root.val && root.val < right.min) {
+            res[0] = Math.max(res[0], left.cnt + right.cnt + 1);
+            return new Node(true, left.cnt + right.cnt + 1, Math.min(left.min, root.val), Math.max(root.val, right.max));
+        }
+        return new Node(false, 0, 0, 0);
+    }
+
+    class Node {
+        boolean isBST;
+        int cnt;
+        long min, max;
+        public Node(boolean isBST, int cnt, long min, long max) {
+            this.isBST = isBST;
+            this.cnt = cnt;
+            this.min = min;
+            this.max = max;
+        }
+    }
 }
